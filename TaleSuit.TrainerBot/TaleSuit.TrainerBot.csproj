@@ -12,8 +12,9 @@
       <PackageReference Include="AdonisUI" Version="1.17.1" />
       <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+      <PackageReference Include="Material.Icons.WPF" Version="2.1.10" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
-      <PackageReference Include="TaleKit.Phoenix" Version="0.0.3" />
+      <PackageReference Include="TaleKit.Phoenix" Version="0.0.6" />
     </ItemGroup>
 
 </Project>
