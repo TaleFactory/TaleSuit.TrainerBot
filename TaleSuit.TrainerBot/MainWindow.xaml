@@ -1,12 +1,57 @@
-﻿<Window x:Class="TaleSuit.TrainerBot.MainWindow"
+﻿<controls:AdonisWindow x:Class="TaleSuit.TrainerBot.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaleSuit.TrainerBot"
+        xmlns:controls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:converter="clr-namespace:TaleSuit.TrainerBot.Converter"
+        xmlns:context1="clr-namespace:TaleSuit.TrainerBot.Context"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Title="TrainerBot" Height="300" Width="250"
+        ResizeMode="CanMinimize"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance context1:MainWindowContext}">
+    <Window.Resources>
+        
+        <converter:BoolToVisibilityConverter x:Key="TrueVisibleConverter" True="Visible" False="Collapsed"/>
+        <converter:BoolToVisibilityConverter x:Key="FalseVisibleConverter" True="Collapsed" False="Visible"/>
+        <converter:NullBooleanConverter x:Key="NullTrueConverter" NotNull="False" Null="True"/>
+        <converter:ReverseBoolConverter x:Key="ReverseBoolConverter"/>
+    </Window.Resources>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadedCommand}"></b:InvokeCommandAction>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="Character" IsEnabled="{Binding Session, Converter={StaticResource NullTrueConverter}}">
+            <StackPanel>
+                <ComboBox ItemsSource="{Binding Characters}" SelectedItem="{Binding Character}"></ComboBox>
+                <Button Margin="0 5 0 0" Content="OK" Command="{Binding SelectCharacterCommand}"></Button>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Actions" Margin="0 10 0 0">
+            <StackPanel>
+                <Button IsEnabled="{Binding Releasing, Converter={StaticResource ReverseBoolConverter}}" Margin="0 5 0 0" Command="{Binding CaptureCommand}">
+                    <Grid>
+                        <TextBlock Visibility="{Binding Capturing, Converter={StaticResource FalseVisibleConverter}}" TextAlignment="Center" Text="CAPTURE"></TextBlock>
+                        <TextBlock Visibility="{Binding Capturing, Converter={StaticResource TrueVisibleConverter}}" TextAlignment="Center" Text="STOP"></TextBlock>
+                    </Grid>
+                </Button>
+                <Button IsEnabled="{Binding Capturing, Converter={StaticResource ReverseBoolConverter}}" Margin="0 5 0 0" Command="{Binding ReleaseCommand}">
+                    <Grid>
+                        <TextBlock Visibility="{Binding Releasing, Converter={StaticResource FalseVisibleConverter}}" TextAlignment="Center" Text="RELEASE"></TextBlock>
+                        <TextBlock Visibility="{Binding Releasing, Converter={StaticResource TrueVisibleConverter}}" TextAlignment="Center" Text="STOP"></TextBlock>
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </GroupBox>
     </Grid>
-</Window>
+</controls:AdonisWindow>
